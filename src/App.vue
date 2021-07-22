@@ -5,27 +5,35 @@
       <button @click="start" :disabled="isStarting">Start timer</button>
       <button @click="instruction">Instructions</button>
     </div>
-    <Play v-if="isStarting" :props="{ reactionDelay }" />
+    <hr />
+    <Timer v-if="isStarting" :props="{ reactionDelay }" @end="end" />
+    <Results :props="{ timerResults, showTimerResults }" />
   </main>
 </template>
 
 <script>
-import Play from "./components/game/Timer.vue";
+import Timer from "./components/game/Timer.vue";
+import Results from "./components/game/Results.vue";
 
 export default {
   name: "App",
 
-  components: { Play },
+  components: { Timer, Results },
 
   data() {
     return {
       isStarting: false,
       reactionDelay: null,
+      timerResults: null,
+      showTimerResults: false,
     };
   },
 
   methods: {
     start() {
+      // Hide results.
+      this.showTimerResults = false;
+
       // Sets the delay of game reaction between: 2-7 seconds.
       this.reactionDelay = 2000 + Math.random() * 5000;
 
@@ -33,6 +41,17 @@ export default {
       this.isStarting = true;
 
       return;
+    },
+
+    end(reactionTime) {
+      // Result.
+      this.timerResults = reactionTime;
+
+      // Show result.
+      this.showTimerResults = true;
+
+      // Ends the timer by setting "isStarting" to: false.
+      this.isStarting = false;
     },
   },
 };
@@ -46,5 +65,12 @@ export default {
   text-align: center;
   color: #444;
   margin-top: 60px;
+}
+
+hr {
+  margin: 2rem;
+  margin-left: auto;
+  margin-right: auto;
+  width: 75%;
 }
 </style>

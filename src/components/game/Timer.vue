@@ -39,6 +39,9 @@ export default {
     stopTimer() {
       // Clears the timer after user has clicked on "timer block".
       clearInterval(this.timer);
+
+      // Emit event to App component.
+      this.$emit("end", this.reactionTime);
     },
   },
 
