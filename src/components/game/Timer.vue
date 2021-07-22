@@ -1,5 +1,7 @@
 <template>
-  <div class="timer-block" v-if="showTimerBlock">Click me</div>
+  <div class="timer-block" v-if="showTimerBlock" @click="stopTimer">
+    Click me
+  </div>
 </template>
 
 <script>
@@ -10,18 +12,35 @@ export default {
   mounted() {
     // Show "game block" when reactionDelay is completed.
     setTimeout(() => {
-      // set showTimerBlock to: true.
+      // Set showTimerBlock to: true.
       this.showTimerBlock = true;
+
+      // Start timer.
+      this.startTimer();
     }, this.props.reactionDelay);
   },
 
   data() {
     return {
+      reactionTime: 0,
       showTimerBlock: false,
+      timer: null,
     };
   },
 
-  methods: {},
+  methods: {
+    startTimer() {
+      // Every 10 milliseconds - add +10ms to variable: "reactionTime".
+      this.timer = setInterval(() => {
+        this.reactionTime += 10;
+      }, 10);
+    },
+
+    stopTimer() {
+      // Clears the timer after user has clicked on "timer block".
+      clearInterval(this.timer);
+    },
+  },
 
   props: {
     props: Object,
